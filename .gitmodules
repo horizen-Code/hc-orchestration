@@ -1,0 +1,21 @@
+[submodule "services/hc-notification-service"]
+	path = services/hc-notification-service
+	url = https://github.com/horizen-Code/hc-notification-service
+[submodule "services/hc-git-service"]
+	path = services/hc-git-service
+	url = https://github.com/horizen-Code/hc-git-service
+[submodule "services/hc-ai-service"]
+	path = services/hc-ai-service
+	url = https://github.com/horizen-Code/hc-ai-service
+[submodule "services/hc-team-service"]
+	path = services/hc-team-service
+	url = https://github.com/horizen-Code/hc-team-service
+[submodule "services/hc-project-service"]
+	path = services/hc-project-service
+	url = https://github.com/horizen-Code/hc-project-service
+[submodule "services/hc-task-service"]
+	path = services/hc-task-service
+	url = https://github.com/horizen-Code/hc-task-service
+[submodule "services/hc-auth-service"]
+	path = services/hc-auth-service
+	url = https://github.com/horizen-Code/hc-auth-service
