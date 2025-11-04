@@ -19,3 +19,6 @@
 [submodule "services/hc-auth-service"]
 	path = services/hc-auth-service
 	url = https://github.com/horizen-Code/hc-auth-service
+[submodule "services/hc-user-service"]
+	path = services/hc-user-service
+	url = https://github.com/horizen-Code/hc-user-service
