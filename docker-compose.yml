@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  user-service-db:
+    image: postgres:15
+    container_name: user-service-db
+    environment:
+      - POSTGRES_DB=user_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - user_service_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - user-service-network
+  hc-user-service:
+    build:
+      context: ./services/hc-user-service
+    container_name: hc-user-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-service-db:5432/user_service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    depends_on:
+      - user-service-db
+    networks:
+      - user-service-network
+volumes:
+  user_service_data:
+
+networks:
+  user-service-network:
+    driver: bridge
