@@ -1,0 +1,96 @@
+_format_version: "3.0"
+_transform: true
+
+# Глобальные плагины
+plugins:
+  - name: correlation-id
+    config:
+      header_name: X-Request-ID
+      generator: uuid
+      echo_downstream: true
+  - name: request-transformer
+    config:
+      add:
+        headers:
+          - X-Forwarded-For:$remote_addr
+          - X-Real-IP:$remote_addr
+
+# Сервисы и роуты
+services:
+  # # Сервис аутентификации
+  # - name: auth-service
+  #   url: http://auth-service:3000
+  #   routes:
+  #     - name: auth-login
+  #       paths: ["/auth/login"]
+  #       methods: ["POST"]
+  #       strip_path: false
+  #     - name: auth-register
+  #       paths: ["/auth/register"]
+  #       methods: ["POST"]
+  #       strip_path: false
+  #     - name: auth-refresh
+  #       paths: ["/auth/refresh"]
+  #       methods: ["POST"]
+  #       strip_path: false
+  #   plugins:
+  #     - name: rate-limiting
+  #       config:
+  #         minute: 10
+  #         policy: local
+
+  # # Пользовательский сервис (требует аутентификацию)
+  # - name: user-service
+  #   url: http://user-service:3000
+  #   routes:
+  #     - name: users-api
+  #       paths: ["/api/users"]
+  #       strip_path: true
+  #   plugins:
+  #     - name: jwt
+  #       enabled: true
+  #       config:
+  #         secret_is_base64: false
+  #         run_on_preflight: true
+  #     - name: rate-limiting
+  #       config:
+  #         minute: 60
+  #         hour: 1000
+  #         policy: local
+  #     - name: request-transformer
+  #       config:
+  #         add:
+  #           headers:
+  #           - X-User-ID:$(consumer.id)
+
+  # Admin API (только внутренний доступ)
+  - name: kong-admin-api
+    url: http://kong:8001
+    routes:
+      - name: kong-admin
+        paths: ["/admin-api"]
+        strip_path: true
+
+  # Health check endpoint
+  - name: health-service
+    url: http://kong:8000
+    routes:
+      - name: health
+        paths: ["/health"]
+        methods: ["GET"]
+    plugins:
+      - name: request-termination
+        config:
+          status_code: 200
+          message: "Healthy"
+# # Потребности (consumers) для доступа к API
+# consumers:
+#   - username: mobile-app
+#     keyauth_credentials:
+#       - key: mobile-app-secret-key-123
+#   - username: web-app
+#     keyauth_credentials:
+#       - key: web-app-secret-key-456
+#   - username: desktop-app
+#     keyauth_credentials:
+#       - key: desktop-app-secret-key-789
