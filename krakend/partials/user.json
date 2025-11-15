@@ -1,0 +1,139 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/v1/users",
+      "method": "POST",
+      "output_encoding": "json",
+      "concurrent_calls": 1,
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "method": "POST",
+          "host": ["http://localhost:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/paged",
+      "method": "GET",
+      "output_encoding": "json",
+      "querystring_params": ["page", "size"],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/paged",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false,
+          "querystring_params": ["page", "size"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/username/{username}",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/username/{username}",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/email/{email}",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/email/{email}",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/search",
+      "method": "GET",
+      "output_encoding": "json",
+      "querystring_params": ["username", "email"],
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/search",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false,
+          "querystring_params": ["username", "email"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "PUT",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "method": "PUT",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "PATCH",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "method": "PATCH",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/users/{id}",
+      "method": "DELETE",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users/{id}",
+          "method": "DELETE",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false
+        }
+      ]
+    }
+  ]
+}

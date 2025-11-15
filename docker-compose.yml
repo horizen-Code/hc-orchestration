@@ -14,7 +14,7 @@ services:
       - user_service_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
     networks:
-      - user-service-network
+      - krakend-network
   hc-user-service:
     build:
       context: ./services/hc-user-service
@@ -29,10 +29,24 @@ services:
     depends_on:
       - user-service-db
     networks:
-      - user-service-network
+      - krakend-network
+
+  krakend:
+    build: ./krakend
+    ports:
+      - "8000:8000"
+    environment:
+      - KRAKEND_PORT=8000
+    volumes:
+      - ./krakend/krakend.json:/etc/krakend/krakend.json
+      # - ./krakend/partials:/etc/krakend/partials
+    depends_on:
+      - hc-user-service
+    networks:
+      - krakend-network
 volumes:
   user_service_data:
 
 networks:
-  user-service-network:
+  krakend-network:
     driver: bridge

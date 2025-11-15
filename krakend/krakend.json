@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "name": "KrakenD Gateway",
+  "port": 8000,
+  "host": ["0.0.0.0"],
+  "timeout": "30000ms",
+  "endpoints": [
+    {
+      "endpoint": "/users",
+      "method": "POST",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "method": "POST",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false,
+          "encoding": "json"
+        }
+      ]
+    },
+    {
+      "endpoint": "/users",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/users",
+          "method": "GET",
+          "host": ["http://hc-user-service:8080"],
+          "disable_host_sanitize": false,
+          "is_collection": true,
+          "encoding": "json"
+        }
+      ]
+    }
+  ],
+  "extra_config": {
+    "github_com/devopsfaith/krakend-gologging": {
+      "level": "DEBUG",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    }
+  }
+}
