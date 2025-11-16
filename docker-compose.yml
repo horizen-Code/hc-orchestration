@@ -32,13 +32,15 @@ services:
       - krakend-network
 
   krakend:
-    build: ./krakend
+    image: krakend:2.9
     ports:
       - "8000:8000"
     environment:
       - KRAKEND_PORT=8000
+      - FC_ENABLE=1
+      - FC_PARTIALS=/etc/krakend/partials
     volumes:
-      - ./krakend/krakend.json:/etc/krakend/krakend.json
+      - ./krakend:/etc/krakend
       # - ./krakend/partials:/etc/krakend/partials
     depends_on:
       - hc-user-service
