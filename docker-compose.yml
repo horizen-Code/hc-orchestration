@@ -1,20 +1,26 @@
 version: "3.8"
 
+networks:
+  krakend-network:
+    driver: bridge
+  user_service-network:
+    driver: bridge
+  task-service-network:
+    driver: bridge
+  team-service-network:
+    driver: bridge
+  project-service-network:
+    driver: bridge
+
+volumes:
+  user_service_data:
+
 services:
   user-service-db:
-    image: postgres:15
-    container_name: user-service-db
-    environment:
-      - POSTGRES_DB=user_service
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    ports:
-      - "5432:5432"
-    volumes:
-      - user_service_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    networks:
-      - krakend-network
+    extends:
+      file: ./db/docker-compose.database.yml
+      service: user-service-db
+
   hc-user-service:
     build:
       context: ./services/hc-user-service
@@ -29,6 +35,7 @@ services:
     depends_on:
       - user-service-db
     networks:
+      - user_service-network
       - krakend-network
 
   krakend:
@@ -44,9 +51,3 @@ services:
       - hc-user-service
     networks:
       - krakend-network
-volumes:
-  user_service_data:
-
-networks:
-  krakend-network:
-    driver: bridge

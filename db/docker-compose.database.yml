@@ -1,0 +1,30 @@
+version: "3.8"
+
+networks:
+  user_service-network:
+    driver: bridge
+  task-service-network:
+    driver: bridge
+  team-service-network:
+    driver: bridge
+  project-service-network:
+    driver: bridge
+
+volumes:
+  user_service_data:
+
+services:
+  user-service-db:
+    image: postgres:15
+    container_name: user-service-db
+    environment:
+      - POSTGRES_DB=user_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - user_service_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - user_service-network
