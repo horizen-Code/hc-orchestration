@@ -15,6 +15,35 @@ services:
       - ./init-scripts:/docker-entrypoint-initdb.d
     networks:
       - krakend-network
+
+  postgres-db:
+    image: postgres:15
+    container_name: project_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=hc_project_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - krakend-network
+
+  project-service:
+    build: ./services/hc-project-service
+    container_name: project_microservice
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/projectdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on:
+      - postgres-db
+    networks:
+      - krakend-network
+
   hc-user-service:
     build:
       context: ./services/hc-user-service
@@ -44,8 +73,10 @@ services:
       - hc-user-service
     networks:
       - krakend-network
+
 volumes:
   user_service_data:
+  postgres_data:
 
 networks:
   krakend-network:
